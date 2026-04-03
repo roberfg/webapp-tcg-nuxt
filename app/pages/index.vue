@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-gray-900 text-white flex items-center justify-center">
     <div class="text-center">
-      <h1 class="text-4xl font-bold mb-12">TCG Collector</h1>
+      <h1 class="text-4xl font-bold mb-12">TCG collage</h1>
       
       <div class="flex gap-16 justify-center items-start">
         <div class="flex flex-col items-center border-2 border-white rounded-xl p-6">

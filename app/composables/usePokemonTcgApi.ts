@@ -1,4 +1,4 @@
-export const usePokemonApi = () => {
+export const usePokemonTcgApi = () => {
     const BASE = 'https://api.pokemontcg.io/v2'
 
     const searchCards = async (name: string, setId?: string, number?: string) => {

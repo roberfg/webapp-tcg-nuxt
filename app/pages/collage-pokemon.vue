@@ -1,6 +1,10 @@
 <script setup lang="ts">
-const { searchCards } = usePokemonApi()
-const { generate, download } = useCollage()
+useHead({
+  title: 'TCG collage - Pokémon'
+})
+
+const { searchCards } = usePokemonTcgApi()
+const { generate, download } = useCollageGenerator()
 
 const deckList = ref('')
 const deck = ref<{ id: string; name: string; imageUrl: string; quantity: number }[]>([])
@@ -9,9 +13,11 @@ const status = ref('')
 const loading = ref(false)
 const notFound = ref<string[]>([])
 
-const autoCols = computed(() => Math.min(5, deck.value.length))
+const cols = ref(3)
 const gap = ref(12)
 const bg = ref('#1a1a1a')
+const badgeColor = ref('#c0392b')
+const borderColor = ref('#ffffff')
 
 interface ParsedCard {
   quantity: number
@@ -97,9 +103,11 @@ const onGenerate = async () => {
   if (!canvasRef.value || deck.value.length === 0) return
   status.value = 'Generando...'
   await generate(canvasRef.value, deck.value, {
-    cols: autoCols.value,
+    cols: cols.value,
     gap: gap.value,
-    bg: bg.value
+    bg: bg.value,
+    badgeColor: badgeColor.value,
+    borderColor: borderColor.value
   })
   status.value = 'Collage listo'
 }
@@ -159,6 +167,11 @@ const onDownload = () => {
           <div class="bg-gray-800 rounded-xl p-4">
             <p class="text-sm text-gray-400 mb-3">Configuración</p>
             <div class="grid grid-cols-2 gap-3 text-sm">
+              <label class="flex flex-col gap-1">
+                <span class="text-gray-400">Columnas</span>
+                <input v-model.number="cols" type="number" min="2" max="10" class="w-16 bg-gray-700 rounded px-2 py-1" />
+                <span class="text-xs text-gray-500">Recomendacion para Móvil: 3 columnas</span>
+              </label>
               <label class="flex items-center gap-2">
                 <span class="text-gray-400">Gap (px)</span>
                 <input v-model.number="gap" type="number" min="0" max="40" class="w-16 bg-gray-700 rounded px-2 py-1" />
@@ -166,6 +179,14 @@ const onDownload = () => {
               <label class="flex items-center gap-2">
                 <span class="text-gray-400">Fondo</span>
                 <input v-model="bg" type="color" class="w-10 h-8 rounded cursor-pointer" />
+              </label>
+              <label class="flex items-center gap-2">
+                <span class="text-gray-400">Círculo</span>
+                <input v-model="badgeColor" type="color" class="w-10 h-8 rounded cursor-pointer" />
+              </label>
+              <label class="flex items-center gap-2">
+                <span class="text-gray-400">Borde</span>
+                <input v-model="borderColor" type="color" class="w-10 h-8 rounded cursor-pointer" />
               </label>
             </div>
           </div>
@@ -195,7 +216,7 @@ const onDownload = () => {
 
         <div class="bg-gray-800 rounded-xl p-4 overflow-auto">
           <p class="text-sm text-gray-400 mb-3">
-            Preview — {{ autoCols }} col{{ autoCols !== 1 ? 's' : '' }}, {{ Math.ceil(deck.length / autoCols) }} fila{{ Math.ceil(deck.length / autoCols) !== 1 ? 's' : '' }}
+            Preview — {{ cols }} col{{ cols !== 1 ? 's' : '' }}, {{ Math.ceil(deck.length / cols) }} fila{{ Math.ceil(deck.length / cols) !== 1 ? 's' : '' }}
           </p>
           <canvas ref="canvasRef" class="rounded max-w-full" />
         </div>

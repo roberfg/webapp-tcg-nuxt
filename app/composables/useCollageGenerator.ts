@@ -1,4 +1,4 @@
-export const useCollage = () => {
+export const useCollageGenerator = () => {
 
     const loadImg = (url: string): Promise<HTMLImageElement | null> =>
         new Promise(resolve => {
@@ -12,9 +12,9 @@ export const useCollage = () => {
     const generate = async (
         canvas: HTMLCanvasElement,
         cards: { name: string; imageUrl: string; quantity: number }[],
-        opts: { cols: number; gap: number; bg: string }
+        opts: { cols: number; gap: number; bg: string; badgeColor?: string; borderColor?: string }
     ) => {
-        const { cols, gap, bg } = opts
+        const { cols, gap, bg, badgeColor = '#c0392b', borderColor = '#ffffff' } = opts
 
         const images = await Promise.all(cards.map(c => loadImg(c.imageUrl)))
 
@@ -55,16 +55,16 @@ export const useCollage = () => {
             }
 
             const bx = x + cardW / 2
-            const by = y + cardH - Math.round(cardW * 0.07)
+            const by = y + cardH - Math.round(cardW * 0.095)
             const badgeR = Math.round(cardW * 0.08)
             ctx.beginPath()
             ctx.arc(bx, by, badgeR, 0, Math.PI * 2)
-            ctx.fillStyle = '#c0392b'
+            ctx.fillStyle = badgeColor
             ctx.fill()
-            ctx.strokeStyle = '#fff'
+            ctx.strokeStyle = borderColor
             ctx.lineWidth = Math.max(1, Math.round(badgeR * 0.18))
             ctx.stroke()
-            ctx.fillStyle = '#fff'
+            ctx.fillStyle = borderColor
             ctx.font = `bold ${Math.round(badgeR * 1.2)}px sans-serif`
             ctx.textAlign = 'center'
             ctx.textBaseline = 'middle'

@@ -1,4 +1,4 @@
-export const useTcgApi = () => {
+export const useScryfallApi = () => {
     const BASE = 'https://api.scryfall.com/cards'
 
     const searchCards = async (name: string) => {
