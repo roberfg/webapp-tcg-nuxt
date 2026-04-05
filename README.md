@@ -1,75 +1,47 @@
-# Nuxt Minimal Starter
+# webapp-tcg-nuxt
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Aplicación web para gestionar colecciones de cartascoleccionables (Pokemon TCG y Magic: The Gathering).
 
-## Setup
+## Descripción
 
-Make sure to install dependencies:
+Interfaz para explorar bases de datos de cartas, generar collages y gestionar tu colección personal.
+
+## Páginas
+
+- `index.vue` - Página principal
+- `database.vue` - Explorador de cartas
+- `collection.vue` - Gestión de colección
+- `collage-magic.vue` - Generador de collages Magic
+- `collage-pokemon.vue` - Generador de collages Pokemon
+
+## APIs
+
+- [Scryfall API](https://scryfall.com/docs/api) - Magic: The Gathering
+- [Pokemon TCG API](https://docs.pokemontcg.io/) - Pokemon Trading Card Game
+
+## Requisitos
+
+- Node.js (LTS)
+- Yarn
+
+## Uso
 
 ```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
+# Instalar dependencias
 yarn install
 
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
+# Iniciar servidor de desarrollo
 yarn dev
 
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
+# Construir para producción
 yarn build
 
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
+# Vista previa de producción
 yarn preview
-
-# bun
-bun run preview
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Tech Stack
+
+- [Nuxt](https://nuxt.com/) - Framework Vue
+- [Vue](https://vuejs.org/) - Framework UI
+- [Tailwind CSS](https://tailwindcss.com/) - Estilos
