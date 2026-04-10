@@ -5,9 +5,11 @@ export const useCollageGenerator = () => {
     const loadImg = (url: string): Promise<HTMLImageElement | null> =>
         new Promise(resolve => {
             const img = new Image()
-            img.crossOrigin = 'anonymous'
             img.onload = () => resolve(img)
-            img.onerror = () => resolve(null)
+            img.onerror = () => {
+                console.error('Failed to load image:', url)
+                resolve(null)
+            }
             img.src = url
         })
 

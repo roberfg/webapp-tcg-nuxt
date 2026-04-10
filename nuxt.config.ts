@@ -2,6 +2,12 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss'],
+  future: {
+    v4: true
+  },
+  nitro: {
+    preset: 'vercel'
+  },
   app: {
     head: {
       title: 'TCG collage',
