@@ -19,6 +19,13 @@
 - [x] Página `/about` con descripción del equipo y agradecimientos a servicios
 - [x] Links de Ayuda y Sobre nosotros en el footer
 - [x] Responsivo: index apila tarjetas en móvil, padding adaptable
+- [x] Descripción y enlace a ayuda en la portada
+- [x] Open Graph tags para preview al compartir el link (`og-image.png`)
+- [x] Favicon real (`/public/icon.png`)
+- [x] Meta description por página (`useSeoMeta`)
+- [x] JSON-LD schema (WebApplication)
+- [x] `sitemap.xml` + `robots.txt` con referencia al sitemap
+- [x] Google Search Console verificado y sitemap enviado
 
 ---
 
@@ -58,6 +65,6 @@
 - [ ] Límite de cartas en el deck list con aviso al usuario
 
 ## SEO / Meta
-- [ ] Open Graph tags para preview al compartir el link
-- [ ] Favicon real (`/public/icon.png`)
-- [ ] Descripción meta por página
+- [x] Open Graph tags para preview al compartir el link
+- [x] Favicon real (`/public/icon.png`)
+- [x] Descripción meta por página
