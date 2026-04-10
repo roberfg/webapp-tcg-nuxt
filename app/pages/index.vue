@@ -29,7 +29,7 @@
     </div>
   </div>
   <footer class="fixed bottom-0 left-0 right-0 bg-gray-800 text-gray-400 text-center py-2 text-sm">
-    webapp-tcg-nuxt v{{ pkg.version }}
+    tcg-collage v{{ pkg.version }}
   </footer>
 </template>
 
