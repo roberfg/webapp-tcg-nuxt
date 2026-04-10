@@ -27,6 +27,11 @@ const { locale, setLocale, t } = useLocale()
 
     <footer class="text-center text-xs text-gray-600 py-3 border-t border-gray-800 space-y-1">
       <p>tcg-collage v{{ version }}</p>
+      <p class="flex items-center justify-center gap-3">
+        <NuxtLink to="/help" class="text-gray-400 hover:text-white underline">{{ t('help') }}</NuxtLink>
+        <span class="text-gray-700">·</span>
+        <NuxtLink to="/about" class="text-gray-400 hover:text-white underline">{{ t('about') }}</NuxtLink>
+      </p>
       <p>
         {{ t('footer_report') }}
         <a
@@ -36,11 +41,6 @@ const { locale, setLocale, t } = useLocale()
           class="text-gray-400 hover:text-white underline"
         >GitHub</a>.
         {{ t('footer_thanks') }}
-      </p>
-      <p class="flex items-center justify-center gap-3">
-        <NuxtLink to="/help" class="text-gray-400 hover:text-white underline">{{ t('help') }}</NuxtLink>
-        <span class="text-gray-700">·</span>
-        <NuxtLink to="/about" class="text-gray-400 hover:text-white underline">{{ t('about') }}</NuxtLink>
       </p>
     </footer>
   </div>

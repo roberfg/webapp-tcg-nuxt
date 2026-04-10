@@ -31,18 +31,18 @@ const pokemonSteps = computed(() => [
             <div
               v-for="(step, index) in magicSteps"
               :key="index"
-              class="bg-gray-800 rounded-xl overflow-hidden"
+              class="bg-gray-800 rounded-xl overflow-hidden border border-white"
             >
+              <div class="p-5">
+                <h3 class="font-semibold text-white mb-1">{{ step.title }}</h3>
+                <p class="text-gray-400 text-sm">{{ step.desc }}</p>
+              </div>
               <img
                 :src="step.img"
                 :alt="step.title"
                 class="w-full object-cover"
                 loading="lazy"
               />
-              <div class="p-5">
-                <h3 class="font-semibold text-white mb-1">{{ step.title }}</h3>
-                <p class="text-gray-400 text-sm">{{ step.desc }}</p>
-              </div>
             </div>
           </div>
         </section>
@@ -54,18 +54,18 @@ const pokemonSteps = computed(() => [
             <div
               v-for="(step, index) in pokemonSteps"
               :key="index"
-              class="bg-gray-800 rounded-xl overflow-hidden"
+              class="bg-gray-800 rounded-xl overflow-hidden border border-white"
             >
+              <div class="p-5">
+                <h3 class="font-semibold text-white mb-1">{{ step.title }}</h3>
+                <p class="text-gray-400 text-sm">{{ step.desc }}</p>
+              </div>
               <img
                 :src="step.img"
                 :alt="step.title"
                 class="w-full object-cover"
                 loading="lazy"
               />
-              <div class="p-5">
-                <h3 class="font-semibold text-white mb-1">{{ step.title }}</h3>
-                <p class="text-gray-400 text-sm">{{ step.desc }}</p>
-              </div>
             </div>
           </div>
         </section>

@@ -132,8 +132,8 @@ const onDownload = () => {
             <textarea
               v-model="deckList"
               placeholder='4 Teal Mask Ogerpon ex TWM 25
-2 Pikachu xy1 11
-1 Charizard xy1 11'
+1 Meowth ex POR 62
+1 Fezandipiti ex ASC 142'
               class="w-full h-48 bg-gray-700 rounded-lg px-3 py-2 text-sm outline-none font-mono"
             />
             <button
