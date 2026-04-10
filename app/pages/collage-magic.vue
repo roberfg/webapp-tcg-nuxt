@@ -1,8 +1,7 @@
 <script setup lang="ts">
-useHead({
-  title: 'TCG collage - Magic'
-})
+useHead({ title: 'TCG collage - Magic' })
 
+const { t } = useLocale()
 const { searchCards } = useScryfallApi()
 const { generate, download } = useCollageGenerator()
 
@@ -11,6 +10,7 @@ const deck = ref<{ id: string; name: string; imageUrl: string; quantity: number 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const status = ref('')
 const loading = ref(false)
+const collageReady = ref(false)
 const notFound = ref<string[]>([])
 
 const cols = ref(3)
@@ -24,31 +24,26 @@ const parseDeckList = (text: string) => {
   const lines = text.trim().split('\n').filter(l => l.trim())
   return lines.map(line => {
     let match: RegExpMatchArray | null
-    
     const withQuotes = line.match(/(\d+),\s*"([^"]+)"(?:\s*,\s*(\S+))?/)
     if (withQuotes) {
       match = withQuotes
     } else {
       match = line.match(/^(\d+)\s+(.+)$/)
     }
-    
     if (!match) return null
-    
-    return {
-      quantity: parseInt(match[1]),
-      name: match[2]
-    }
+    return { quantity: parseInt(match[1]), name: match[2] }
   }).filter(Boolean) as { quantity: number; name: string }[]
 }
 
 const processDeckList = async () => {
   if (!deckList.value.trim()) return
-  
+
   loading.value = true
-  status.value = 'Procesando...'
+  collageReady.value = false
+  status.value = t('processing')
   notFound.value = []
   deck.value = []
-  
+
   try {
     const parsed = parseDeckList(deckList.value)
     const total = parsed.length
@@ -65,12 +60,7 @@ const processDeckList = async () => {
             if (existing) {
               existing.quantity = Math.min(4, existing.quantity + item.quantity)
             } else {
-              deck.value.push({
-                id: card.id,
-                name: card.name,
-                imageUrl: card.imageUrl,
-                quantity: Math.min(4, item.quantity)
-              })
+              deck.value.push({ id: card.id, name: card.name, imageUrl: card.imageUrl, quantity: Math.min(4, item.quantity) })
             }
           } else {
             notFound.value.push(item.name)
@@ -79,17 +69,17 @@ const processDeckList = async () => {
           notFound.value.push(item.name)
         } finally {
           processed++
-          status.value = `Procesando ${processed}/${total}...`
+          status.value = t('processing_progress', { processed, total })
         }
       }))
     }
 
-    status.value = `${deck.value.length} cartas cargadas`
+    status.value = t('cards_loaded', { count: deck.value.length })
     if (notFound.value.length > 0) {
-      status.value += `, ${notFound.value.length} no encontradas`
+      status.value += `, ${t('not_found_count', { count: notFound.value.length })}`
     }
   } catch (e) {
-    status.value = 'Error al procesar'
+    status.value = t('error_processing')
   } finally {
     loading.value = false
   }
@@ -101,16 +91,13 @@ const removeCard = (id: string) => {
 
 const onGenerate = async () => {
   if (!canvasRef.value || deck.value.length === 0) return
-  status.value = 'Generando...'
+  status.value = t('generating')
   await generate(canvasRef.value, deck.value, {
-    cols: cols.value,
-    gap: gap.value,
-    bg: bg.value,
-    badgeColor: badgeColor.value,
-    borderColor: borderColor.value,
-    badgeShape: badgeShape.value
+    cols: cols.value, gap: gap.value, bg: bg.value,
+    badgeColor: badgeColor.value, borderColor: borderColor.value, badgeShape: badgeShape.value
   })
-  status.value = 'Collage listo'
+  collageReady.value = true
+  status.value = t('collage_ready')
 }
 
 const onDownload = () => {
@@ -123,16 +110,16 @@ const onDownload = () => {
     <div class="max-w-6xl mx-auto">
 
       <div class="flex items-center gap-4 mb-6">
-        <NuxtLink to="/" class="text-gray-400 hover:text-white">← Home</NuxtLink>
-        <h1 class="text-2xl font-bold">Collage Generator - Magic</h1>
+        <NuxtLink to="/" class="text-gray-400 hover:text-white">{{ t('home') }}</NuxtLink>
+        <h1 class="text-2xl font-bold">{{ t('collage_magic_title') }}</h1>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
         <div class="space-y-4">
           <div class="bg-gray-800 rounded-xl p-4">
-            <p class="text-sm text-gray-400 mb-3">Ingresa tu lista de cartas</p>
-            <p class="text-xs text-gray-500 mb-2">Formatos: cantidad nombre / cantidad,"nombre"</p>
+            <p class="text-sm text-gray-400 mb-3">{{ t('enter_cards') }}</p>
+            <p class="text-xs text-gray-500 mb-2">{{ t('formats_magic') }}</p>
             <textarea
               v-model="deckList"
               placeholder='1 Get Out
@@ -145,12 +132,12 @@ const onDownload = () => {
               :disabled="loading || !deckList.trim()"
               @click="processDeckList"
             >
-              {{ loading ? 'Procesando...' : 'Procesar lista' }}
+              {{ loading ? t('processing') : t('process_list') }}
             </button>
           </div>
 
           <div class="bg-gray-800 rounded-xl p-4">
-            <p class="text-sm text-gray-400 mb-3">Cartas ({{ deck.length }} cartas únicas)</p>
+            <p class="text-sm text-gray-400 mb-3">{{ t('deck_title') }} ({{ deck.length }} {{ t('cards_unique') }})</p>
             <div class="space-y-2 max-h-48 overflow-y-auto">
               <div v-for="card in deck" :key="card.id" class="flex items-center gap-3">
                 <img :src="card.imageUrl" :alt="card.name" class="w-10 rounded" />
@@ -166,35 +153,35 @@ const onDownload = () => {
           </div>
 
           <div class="bg-gray-800 rounded-xl p-4">
-            <p class="text-sm text-gray-400 mb-3">Configuración</p>
+            <p class="text-sm text-gray-400 mb-3">{{ t('settings') }}</p>
             <div class="grid grid-cols-2 gap-3 text-sm">
               <label class="flex flex-col gap-1">
-                <span class="text-gray-400">Columnas</span>
+                <span class="text-gray-400">{{ t('columns') }}</span>
                 <input v-model.number="cols" type="number" min="2" max="10" class="w-16 bg-gray-700 rounded px-2 py-1" />
-                <span class="text-xs text-gray-500">La recomendacion para Móvil son 3 columnas</span>
+                <span class="text-xs text-gray-500">{{ t('columns_hint') }}</span>
               </label>
               <label class="flex items-center gap-2">
-                <span class="text-gray-400">Gap (px)</span>
+                <span class="text-gray-400">{{ t('gap') }} (px)</span>
                 <input v-model.number="gap" type="number" min="0" max="40" class="w-16 bg-gray-700 rounded px-2 py-1" />
               </label>
               <label class="flex items-center gap-2">
-                <span class="text-gray-400">Fondo</span>
+                <span class="text-gray-400">{{ t('background') }}</span>
                 <input v-model="bg" type="color" class="w-10 h-8 rounded cursor-pointer" />
               </label>
               <label class="flex items-center gap-2">
-                <span class="text-gray-400">Círculo</span>
+                <span class="text-gray-400">{{ t('circle') }}</span>
                 <input v-model="badgeColor" type="color" class="w-10 h-8 rounded cursor-pointer" />
               </label>
               <label class="flex items-center gap-2">
-                <span class="text-gray-400">Borde</span>
+                <span class="text-gray-400">{{ t('border') }}</span>
                 <input v-model="borderColor" type="color" class="w-10 h-8 rounded cursor-pointer" />
               </label>
               <label class="flex items-center gap-2">
-                <span class="text-gray-400">Badge</span>
+                <span class="text-gray-400">{{ t('badge') }}</span>
                 <select v-model="badgeShape" class="bg-gray-700 rounded px-2 py-1">
-                  <option value="circle">Círculo</option>
-                  <option value="diamond">Diamante</option>
-                  <option value="hexagon">Hexágono</option>
+                  <option value="circle">{{ t('circle') }}</option>
+                  <option value="diamond">{{ t('diamond') }}</option>
+                  <option value="hexagon">{{ t('hexagon') }}</option>
                 </select>
               </label>
             </div>
@@ -206,26 +193,26 @@ const onDownload = () => {
               :disabled="deck.length === 0"
               @click="onGenerate"
             >
-              Generar collage
+              {{ t('generate_collage') }}
             </button>
             <button
               class="flex-1 py-3 bg-blue-600 rounded-xl font-medium hover:bg-blue-700 disabled:opacity-40"
-              :disabled="status !== 'Collage listo'"
+              :disabled="!collageReady"
               @click="onDownload"
             >
-              Descargar PNG
+              {{ t('download_png') }}
             </button>
           </div>
 
           <p class="text-sm text-gray-400">{{ status }}</p>
           <div v-if="notFound.length > 0" class="text-sm text-red-400">
-            No encontradas: {{ notFound.join(', ') }}
+            {{ t('not_found_label') }}: {{ notFound.join(', ') }}
           </div>
         </div>
 
         <div class="bg-gray-800 rounded-xl p-4 overflow-auto">
           <p class="text-sm text-gray-400 mb-3">
-            Preview — {{ Math.min(cols, deck.length || 1) }} col{{ Math.min(cols, deck.length || 1) !== 1 ? 's' : '' }}, {{ Math.ceil(deck.length / Math.min(cols, deck.length || 1)) }} fila{{ Math.ceil(deck.length / Math.min(cols, deck.length || 1)) !== 1 ? 's' : '' }}
+            {{ t('preview') }} — {{ Math.min(cols, deck.length || 1) }} col{{ Math.min(cols, deck.length || 1) !== 1 ? 's' : '' }}, {{ Math.ceil(deck.length / Math.min(cols, deck.length || 1)) }} {{ t('row') }}{{ Math.ceil(deck.length / Math.min(cols, deck.length || 1)) !== 1 ? 's' : '' }}
           </p>
           <canvas ref="canvasRef" class="rounded max-w-full" />
         </div>

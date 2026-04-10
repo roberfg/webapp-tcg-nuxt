@@ -1,23 +1,44 @@
 <script setup lang="ts">
 const { public: { version } } = useRuntimeConfig()
+const { locale, setLocale, t } = useLocale()
 </script>
 
 <template>
   <div class="flex flex-col min-h-screen bg-gray-900 text-white">
+
+    <div class="fixed top-3 right-3 z-50 flex gap-2">
+      <button
+        @click="setLocale('es')"
+        :class="locale === 'es' ? 'opacity-100' : 'opacity-35'"
+        class="text-xl transition-opacity hover:opacity-100"
+        title="Español"
+      >🇨🇱</button>
+      <button
+        @click="setLocale('en')"
+        :class="locale === 'en' ? 'opacity-100' : 'opacity-35'"
+        class="text-xl transition-opacity hover:opacity-100"
+        title="English"
+      >🇺🇸</button>
+    </div>
+
     <main class="flex-1 flex flex-col">
       <NuxtPage />
     </main>
+
     <footer class="text-center text-xs text-gray-600 py-3 border-t border-gray-800 space-y-1">
       <p>tcg-collage v{{ version }}</p>
       <p>
-        Si ves algún problema con la web, por favor infórmalo en
+        {{ t('footer_report') }}
         <a
           href="https://github.com/roberfg/webapp-tcg-nuxt/issues"
           target="_blank"
           rel="noopener noreferrer"
           class="text-gray-400 hover:text-white underline"
-        >GitHub Issues</a>.
-        ¡Gracias!
+        >GitHub</a>.
+        {{ t('footer_thanks') }}
+      </p>
+      <p>
+        <NuxtLink to="/help" class="text-gray-400 hover:text-white underline">{{ t('help') }}</NuxtLink>
       </p>
     </footer>
   </div>

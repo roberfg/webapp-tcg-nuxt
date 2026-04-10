@@ -1,12 +1,16 @@
+<script setup lang="ts">
+const { t } = useLocale()
+</script>
+
 <template>
   <div class="flex-1 p-4 sm:p-6">
     <div class="max-w-6xl mx-auto">
       <div class="flex items-center gap-4 mb-6">
-        <NuxtLink to="/" class="text-gray-400 hover:text-white">← Home</NuxtLink>
+        <NuxtLink to="/" class="text-gray-400 hover:text-white">{{ t('home') }}</NuxtLink>
         <h1 class="text-2xl font-bold">Database</h1>
       </div>
       <div class="bg-gray-800 rounded-xl p-8 text-center">
-        <p class="text-gray-400">Próximamente...</p>
+        <p class="text-gray-400">{{ t('coming_soon') }}</p>
       </div>
     </div>
   </div>

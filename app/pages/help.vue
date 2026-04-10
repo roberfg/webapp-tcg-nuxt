@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { t } = useLocale()
+useHead({ title: 'TCG collage - Help' })
 </script>
 
 <template>
@@ -7,7 +8,7 @@ const { t } = useLocale()
     <div class="max-w-6xl mx-auto">
       <div class="flex items-center gap-4 mb-6">
         <NuxtLink to="/" class="text-gray-400 hover:text-white">{{ t('home') }}</NuxtLink>
-        <h1 class="text-2xl font-bold">Collection</h1>
+        <h1 class="text-2xl font-bold">{{ t('help') }}</h1>
       </div>
       <div class="bg-gray-800 rounded-xl p-8 text-center">
         <p class="text-gray-400">{{ t('coming_soon') }}</p>

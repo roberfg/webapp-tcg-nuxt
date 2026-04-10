@@ -1,16 +1,14 @@
 # webapp-tcg-nuxt
 
-Aplicación web para gestionar colecciones de cartascoleccionables (Pokemon TCG y Magic: The Gathering).
+Aplicación web para gestionar collage de cartas (Pokemon TCG y Magic: The Gathering).
 
 ## Descripción
 
-Interfaz para explorar bases de datos de cartas, generar collages y gestionar tu colección personal.
+Interfaz para generar collages.
 
 ## Páginas
 
 - `index.vue` - Página principal
-- `database.vue` - Explorador de cartas
-- `collection.vue` - Gestión de colección
 - `collage-magic.vue` - Generador de collages Magic
 - `collage-pokemon.vue` - Generador de collages Pokemon
 
