@@ -161,7 +161,7 @@ const onDownload = () => {
           </div>
 
           <div class="bg-gray-800 rounded-xl p-4">
-            <p class="text-sm text-gray-400 mb-3">Deck ({{ deck.length }} cartas únicas)</p>
+            <p class="text-sm text-gray-400 mb-3">Cartas ({{ deck.length }} cartas únicas)</p>
             <div class="space-y-2 max-h-48 overflow-y-auto">
               <div v-for="card in deck" :key="card.id" class="flex items-center gap-3">
                 <img :src="card.imageUrl" :alt="card.name" class="w-10 rounded" />
@@ -182,7 +182,7 @@ const onDownload = () => {
               <label class="flex flex-col gap-1">
                 <span class="text-gray-400">Columnas</span>
                 <input v-model.number="cols" type="number" min="2" max="10" class="w-16 bg-gray-700 rounded px-2 py-1" />
-                <span class="text-xs text-gray-500">Recomendacion para Móvil: 3 columnas</span>
+                <span class="text-xs text-gray-500">La recomendacion para Móvil son 3 columnas</span>
               </label>
               <label class="flex items-center gap-2">
                 <span class="text-gray-400">Gap (px)</span>
