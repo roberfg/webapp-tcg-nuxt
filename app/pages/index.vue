@@ -1,11 +1,11 @@
 <template>
-  <div class="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+  <div class="flex-1 flex items-center justify-center p-4 sm:p-6">
     <div class="text-center">
       <h1 class="text-4xl font-bold mb-12">TCG collage</h1>
-      
-      <div class="flex gap-16 justify-center items-start">
+
+      <div class="flex flex-col sm:flex-row gap-8 sm:gap-16 justify-center items-center">
         <div class="flex flex-col items-center border-2 border-white rounded-xl p-6">
-          <NuxtLink to="/collage-magic" class="w-48 h-48 mb-4">
+          <NuxtLink to="/collage-magic" class="w-32 h-32 sm:w-48 sm:h-48 mb-4">
             <img src="/magic-logo.png" alt="Magic" class="w-full h-full object-contain" />
           </NuxtLink>
           <div class="flex flex-col gap-2">
@@ -16,7 +16,7 @@
         </div>
 
         <div class="flex flex-col items-center border-2 border-white rounded-xl p-6">
-          <NuxtLink to="/collage-pokemon" class="w-48 h-48 mb-4">
+          <NuxtLink to="/collage-pokemon" class="w-32 h-32 sm:w-48 sm:h-48 mb-4">
             <img src="/pokemon-logo.png" alt="Pokémon" class="w-full h-full object-contain" />
           </NuxtLink>
           <div class="flex flex-col gap-2">

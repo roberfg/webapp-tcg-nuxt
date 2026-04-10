@@ -113,7 +113,7 @@ const onDownload = () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-900 text-white p-6">
+  <div class="flex-1 p-4 sm:p-6">
     <div class="max-w-6xl mx-auto">
 
       <div class="flex items-center gap-4 mb-6">
