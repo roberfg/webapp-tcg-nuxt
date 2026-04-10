@@ -11,7 +11,10 @@ export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss'],
   app: {
     head: {
-      title: 'TCG collage'
+      title: 'TCG collage',
+      link: [
+        { rel: 'icon', type: 'image/png', href: '/icon.png' }
+      ]
     }
   }
 })
