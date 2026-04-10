@@ -115,7 +115,7 @@ const translations = {
     help_pokemon_step3_desc: 'Generate the collage and download it as a PNG image ready to share.',
     about: 'About us',
     about_who_title: 'Who are we?',
-    about_who_desc: 'We are a group of friends who love Magic: The Gathering and collectible card games. This tool was born from the need to quickly generate visual collages of our decks to share with the community. We built it in our free time with a lot of love.',
+    about_who_desc: 'We are a group of friends who love Magic: The Gathering and collectible card games. This tool was born from the need to generate visual collages of our decks and cards to buy; quickly and beautifully, to share them with the community. We built it in our free time with a lot of love.',
     about_thanks_title: 'Acknowledgements',
     about_thanks_intro: 'This app would not be possible without the services and projects that make it work:',
   }
