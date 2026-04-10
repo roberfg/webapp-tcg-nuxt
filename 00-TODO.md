@@ -52,7 +52,7 @@
 - [ ] Mensaje cuando el collage está vacío, invitando a pegar una lista
 - [ ] Modo claro / oscuro
 - [ ] Skeleton de carga en las imágenes del deck list
-- [ ] Toast de confirmación al descargar el PNG
+- [ ] Toast de confirmación al descargar el JPG
 - [ ] Botón para limpiar la lista y el deck de una vez
 
 ## Mobile

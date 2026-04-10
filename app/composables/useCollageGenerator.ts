@@ -17,6 +17,16 @@ export const useCollageGenerator = () => {
             img.src = `/api/image-proxy?url=${encodeURIComponent(url)}`
         })
 
+    const loadImages = async (cards: { imageUrl: string }[]): Promise<(HTMLImageElement | null)[]> => {
+        const images: (HTMLImageElement | null)[] = []
+        for (let i = 0; i < cards.length; i += 4) {
+            const batch = cards.slice(i, i + 4)
+            const results = await Promise.all(batch.map(c => loadImg(c.imageUrl)))
+            images.push(...results)
+        }
+        return images
+    }
+
     const drawBadgePath = (ctx: CanvasRenderingContext2D, x: number, y: number, r: number, shape: BadgeShape) => {
         ctx.beginPath()
         switch (shape) {
@@ -43,16 +53,13 @@ export const useCollageGenerator = () => {
     const generate = async (
         canvas: HTMLCanvasElement,
         cards: { name: string; imageUrl: string; quantity: number }[],
-        opts: { cols: number; gap: number; bg: string; badgeColor?: string; borderColor?: string; badgeShape?: BadgeShape }
+        opts: { cols: number; gap: number; bg: string; badgeColor?: string; borderColor?: string; badgeShape?: BadgeShape },
+        preloadedImages?: (HTMLImageElement | null)[],
+        separatorRows?: number
     ) => {
         const { cols, gap, bg, badgeColor = '#c0392b', borderColor = '#ffffff', badgeShape = 'circle' } = opts
 
-        const images: (HTMLImageElement | null)[] = []
-        for (let i = 0; i < cards.length; i += 4) {
-            const batch = cards.slice(i, i + 4)
-            const batchResults = await Promise.all(batch.map(c => loadImg(c.imageUrl)))
-            images.push(...batchResults)
-        }
+        const images = preloadedImages ?? await loadImages(cards)
 
         const firstImg = images.find(img => img !== null)
         if (!firstImg) return
@@ -62,8 +69,16 @@ export const useCollageGenerator = () => {
 
         const actualCols = Math.min(cols, cards.length)
         const rows = Math.ceil(cards.length / actualCols)
+        const numSeps = separatorRows ? Math.floor((rows - 1) / separatorRows) : 0
+        const sepH = numSeps > 0 ? Math.max(gap * 4, 40) : 0
+
+        const getCardY = (row: number) => {
+            const sepsAbove = separatorRows ? Math.floor(row / separatorRows) : 0
+            return gap + row * (cardH + gap) + sepsAbove * sepH
+        }
+
         const W = actualCols * cardW + (actualCols - 1) * gap + gap * 2
-        const H = rows * cardH + (rows - 1) * gap + gap * 2
+        const H = rows * cardH + (rows - 1) * gap + gap * 2 + numSeps * sepH
 
         canvas.width = W
         canvas.height = H
@@ -72,11 +87,22 @@ export const useCollageGenerator = () => {
         ctx.fillStyle = bg
         ctx.fillRect(0, 0, W, H)
 
+        // Dibujar bandas de separación con color de fondo de la página
+        if (separatorRows && numSeps > 0) {
+            ctx.fillStyle = '#1f2937'
+            for (let s = 1; s <= numSeps; s++) {
+                const lastRowOfChunk = s * separatorRows - 1
+                if (lastRowOfChunk >= rows) break
+                const sepYStart = getCardY(lastRowOfChunk) + cardH
+                ctx.fillRect(0, sepYStart, W, gap + sepH)
+            }
+        }
+
         cards.forEach((card, i) => {
             const col = i % actualCols
             const row = Math.floor(i / actualCols)
             const x = gap + col * (cardW + gap)
-            const y = gap + row * (cardH + gap)
+            const y = getCardY(row)
 
             if (images[i]) {
                 ctx.drawImage(images[i]!, x, y, cardW, cardH)
@@ -108,7 +134,7 @@ export const useCollageGenerator = () => {
         })
     }
 
-    const download = (canvas: HTMLCanvasElement, type: 'pokemon' | 'magic' = 'pokemon') => {
+    const getTimestamp = () => {
         const now = new Date()
         const day = String(now.getDate()).padStart(2, '0')
         const month = String(now.getMonth() + 1).padStart(2, '0')
@@ -116,13 +142,47 @@ export const useCollageGenerator = () => {
         const hours = String(now.getHours()).padStart(2, '0')
         const minutes = String(now.getMinutes()).padStart(2, '0')
         const seconds = String(now.getSeconds()).padStart(2, '0')
-        const filename = `collage_${type}_${day}${month}${year}${hours}${minutes}${seconds}.jpg`
+        return `${day}${month}${year}${hours}${minutes}${seconds}`
+    }
 
+    const downloadCanvas = (canvas: HTMLCanvasElement, type: 'pokemon' | 'magic', timestamp: string, index?: number, total?: number) => {
+        const suffix = index !== undefined && total !== undefined && total > 1 ? `_${index}de${total}` : ''
+        const filename = `collage_${type}_${timestamp}${suffix}.jpg`
         const a = document.createElement('a')
         a.download = filename
         a.href = canvas.toDataURL('image/jpeg', 0.85)
         a.click()
     }
 
-    return { generate, download }
+    const download = (canvas: HTMLCanvasElement, type: 'pokemon' | 'magic' = 'pokemon') => {
+        downloadCanvas(canvas, type, getTimestamp())
+    }
+
+    const downloadAll = async (
+        cards: { name: string; imageUrl: string; quantity: number }[],
+        opts: { cols: number; gap: number; bg: string; badgeColor?: string; borderColor?: string; badgeShape?: BadgeShape },
+        type: 'pokemon' | 'magic',
+        chunkRows = 3
+    ) => {
+        const cardsPerFile = opts.cols * chunkRows
+        const images = await loadImages(cards)
+        const timestamp = getTimestamp()
+
+        const chunks: { cards: typeof cards; images: (HTMLImageElement | null)[] }[] = []
+        for (let i = 0; i < cards.length; i += cardsPerFile) {
+            chunks.push({
+                cards: cards.slice(i, i + cardsPerFile),
+                images: images.slice(i, i + cardsPerFile),
+            })
+        }
+
+        for (let i = 0; i < chunks.length; i++) {
+            const tempCanvas = document.createElement('canvas')
+            await generate(tempCanvas, chunks[i].cards, opts, chunks[i].images)
+            downloadCanvas(tempCanvas, type, timestamp, i + 1, chunks.length)
+            if (i < chunks.length - 1) await new Promise(r => setTimeout(r, 300))
+        }
+    }
+
+    return { generate, download, downloadAll }
 }

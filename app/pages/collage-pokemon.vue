@@ -12,7 +12,7 @@ useSeoMeta({
 
 const { t } = useLocale()
 const { searchCards } = usePokemonTcgApi()
-const { generate, download } = useCollageGenerator()
+const { generate, download, downloadAll } = useCollageGenerator()
 
 const deckList = ref('')
 const deck = ref<{ id: string; name: string; imageUrl: string; quantity: number }[]>([])
@@ -24,11 +24,18 @@ const notFound = ref<string[]>([])
 const apiErrors = ref<string[]>([])
 
 const cols = ref(3)
-const gap = ref(12)
+const gap = ref(5)
 const bg = ref('#1a1a1a')
 const badgeColor = ref('#c0392b')
 const borderColor = ref('#ffffff')
 const badgeShape = ref<'circle' | 'diamond' | 'hexagon'>('hexagon')
+const multipleFiles = ref(true)
+const multiRows = ref(3)
+
+watch(() => deck.value.length, (len) => {
+  if (len < 10) multipleFiles.value = false
+  else multipleFiles.value = true
+})
 
 interface ParsedCard {
   quantity: number
@@ -76,9 +83,9 @@ const processDeckList = async () => {
             const card = cards[0]
             const existing = deck.value.find(c => c.id === card.id)
             if (existing) {
-              existing.quantity = Math.min(4, existing.quantity + item.quantity)
+              existing.quantity = Math.min(60,existing.quantity + item.quantity)
             } else {
-              deck.value.push({ id: card.id, name: card.name, imageUrl: card.imageUrl, quantity: Math.min(4, item.quantity) })
+              deck.value.push({ id: card.id, name: card.name, imageUrl: card.imageUrl, quantity: Math.min(60,item.quantity) })
             }
           } else {
             notFound.value.push(item.name)
@@ -110,16 +117,23 @@ const removeCard = (id: string) => {
 const onGenerate = async () => {
   if (!canvasRef.value || deck.value.length === 0) return
   status.value = t('generating')
-  await generate(canvasRef.value, deck.value, {
-    cols: cols.value, gap: gap.value, bg: bg.value,
-    badgeColor: badgeColor.value, borderColor: borderColor.value, badgeShape: badgeShape.value
-  })
+  await generate(
+    canvasRef.value,
+    deck.value,
+    { cols: cols.value, gap: gap.value, bg: bg.value, badgeColor: badgeColor.value, borderColor: borderColor.value, badgeShape: badgeShape.value },
+    undefined,
+    multipleFiles.value ? multiRows.value : undefined
+  )
   collageReady.value = true
   status.value = t('collage_ready')
 }
 
-const onDownload = () => {
-  if (canvasRef.value) download(canvasRef.value, 'pokemon')
+const onDownload = async () => {
+  if (multipleFiles.value) {
+    await downloadAll(deck.value, { cols: cols.value, gap: gap.value, bg: bg.value, badgeColor: badgeColor.value, borderColor: borderColor.value, badgeShape: badgeShape.value }, 'pokemon', multiRows.value)
+  } else {
+    if (canvasRef.value) download(canvasRef.value, 'pokemon')
+  }
 }
 </script>
 
@@ -163,7 +177,7 @@ const onDownload = () => {
                 <div class="flex items-center gap-2">
                   <button class="w-6 h-6 bg-gray-700 rounded text-xs" @click="card.quantity = Math.max(1, card.quantity - 1)">-</button>
                   <span class="text-sm w-4 text-center">{{ card.quantity }}</span>
-                  <button class="w-6 h-6 bg-gray-700 rounded text-xs" @click="card.quantity = Math.min(4, card.quantity + 1)">+</button>
+                  <button class="w-6 h-6 bg-gray-700 rounded text-xs" @click="card.quantity = Math.min(60,card.quantity + 1)">+</button>
                   <button class="w-6 h-6 bg-red-800 rounded text-xs" @click="removeCard(card.id)">x</button>
                 </div>
               </div>
@@ -202,6 +216,18 @@ const onDownload = () => {
                   <option value="hexagon">{{ t('hexagon') }}</option>
                 </select>
               </label>
+            </div>
+            <div class="mt-3">
+              <span class="text-gray-400 text-sm block mb-1">{{ t('download_mode') }}</span>
+              <div class="flex gap-2">
+                <button @click="multipleFiles = true" :disabled="deck.length < 10" :class="multipleFiles ? 'bg-green-600 border-white' : 'bg-gray-700 border-gray-500'" class="flex-1 px-3 py-1.5 text-sm rounded border disabled:opacity-40 disabled:cursor-not-allowed">{{ t('download_multiple') }}</button>
+                <button @click="multipleFiles = false" :class="!multipleFiles ? 'bg-green-600 border-white' : 'bg-gray-700 border-gray-500'" class="flex-1 px-3 py-1.5 text-sm rounded border">{{ t('download_single') }}</button>
+              </div>
+              <div v-if="multipleFiles" class="flex items-center gap-2 mt-2">
+                <span class="text-gray-400 text-sm">{{ t('rows') }}</span>
+                <input v-model.number="multiRows" type="number" min="1" max="6" class="w-16 bg-gray-700 rounded px-2 py-1 text-sm" />
+              </div>
+              <p class="text-xs text-gray-500 mt-1">{{ t('download_multiple_hint') }}</p>
             </div>
           </div>
 

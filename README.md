@@ -1,6 +1,6 @@
 # webapp-tcg-nuxt
 
-Aplicación web para generar collages de cartas TCG (Pokémon y Magic: The Gathering) a partir de listas de deck. Permite descargar el resultado como imagen PNG.
+Aplicación web para generar collages de cartas TCG (Pokémon y Magic: The Gathering) a partir de listas de deck. Permite descargar el resultado como imagen JPG.
 
 Creada por un grupo de amigos aficionados a Magic: The Gathering y los juegos de cartas coleccionables, construida en nuestro tiempo libre con mucho cariño.
 
@@ -10,7 +10,7 @@ Creada por un grupo de amigos aficionados a Magic: The Gathering y los juegos de
 - Búsqueda de cartas por nombre exacto usando APIs públicas
 - Configuración del collage: columnas, espaciado, color de fondo, badge y borde
 - Badges de cantidad sobre cada carta (formas: círculo, diamante, hexágono)
-- Descarga del collage como PNG con nombre automático y fecha
+- Descarga del collage como JPG con nombre automático y fecha
 - Preview en tiempo real del collage generado
 - Progreso visible al procesar listas (`Procesando 4/12...`)
 - i18n: interfaz en **Español** 🇨🇱 e **Inglés** 🇺🇸 con selector de bandera
@@ -55,7 +55,7 @@ Creada por un grupo de amigos aficionados a Magic: The Gathering y los juegos de
 - [Nuxt 4](https://nuxt.com/) — Framework Vue con SSR
 - [Vue 3](https://vuejs.org/) — Framework UI
 - [Tailwind CSS](https://tailwindcss.com/) — Estilos
-- [html-to-image](https://github.com/bubkoo/html-to-image) — Exportación del collage como PNG
+- [html-to-image](https://github.com/bubkoo/html-to-image) — Exportación del collage como JPG
 - Nitro server routes — Proxy de imágenes para CORS
 - [Vercel](https://vercel.com) — Hosting y deploy
 
