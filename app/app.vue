@@ -37,8 +37,10 @@ const { locale, setLocale, t } = useLocale()
         >GitHub</a>.
         {{ t('footer_thanks') }}
       </p>
-      <p>
+      <p class="flex items-center justify-center gap-3">
         <NuxtLink to="/help" class="text-gray-400 hover:text-white underline">{{ t('help') }}</NuxtLink>
+        <span class="text-gray-700">·</span>
+        <NuxtLink to="/about" class="text-gray-400 hover:text-white underline">{{ t('about') }}</NuxtLink>
       </p>
     </footer>
   </div>
