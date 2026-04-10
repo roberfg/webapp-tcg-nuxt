@@ -1,11 +1,11 @@
 <template>
-  <div class="min-h-screen bg-gray-900 text-white flex items-center justify-center px-4 pb-20">
+  <div class="min-h-screen bg-gray-900 text-white flex items-center justify-center">
     <div class="text-center">
-      <h1 class="text-3xl md:text-4xl font-bold mb-8 md:mb-12">TCG collage</h1>
+      <h1 class="text-4xl font-bold mb-12">TCG collage</h1>
       
-      <div class="flex flex-col md:flex-row gap-6 md:gap-16 justify-center items-center">
-        <div class="flex flex-col items-center border-2 border-white rounded-xl p-4 md:p-6 w-full md:w-auto">
-          <NuxtLink to="/collage-magic" class="w-32 h-32 md:w-48 md:h-48 mb-4">
+      <div class="flex gap-16 justify-center items-start">
+        <div class="flex flex-col items-center border-2 border-white rounded-xl p-6">
+          <NuxtLink to="/collage-magic" class="w-48 h-48 mb-4">
             <img src="/magic-logo.png" alt="Magic" class="w-full h-full object-contain" />
           </NuxtLink>
           <div class="flex flex-col gap-2">
@@ -15,8 +15,8 @@
           </div>
         </div>
 
-        <div class="flex flex-col items-center border-2 border-white rounded-xl p-4 md:p-6 w-full md:w-auto">
-          <NuxtLink to="/collage-pokemon" class="w-32 h-32 md:w-48 md:h-48 mb-4">
+        <div class="flex flex-col items-center border-2 border-white rounded-xl p-6">
+          <NuxtLink to="/collage-pokemon" class="w-48 h-48 mb-4">
             <img src="/pokemon-logo.png" alt="Pokémon" class="w-full h-full object-contain" />
           </NuxtLink>
           <div class="flex flex-col gap-2">
@@ -28,11 +28,4 @@
       </div>
     </div>
   </div>
-  <footer class="fixed bottom-0 left-0 right-0 bg-gray-800 text-gray-400 text-center py-2 text-sm">
-    tcg-collage v{{ pkg.version }}
-  </footer>
 </template>
-
-<script setup lang="ts">
-const pkg = usePackage()
-</script>

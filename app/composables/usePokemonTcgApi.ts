@@ -1,8 +1,23 @@
+interface PokemonTcgCard {
+    id: string
+    name: string
+    images: {
+        small: string
+        large: string
+    }
+}
+
+interface PokemonTcgSet {
+    id: string
+}
+
+interface PokemonTcgResponse<T> {
+    data: T[]
+}
+
 export const usePokemonTcgApi = () => {
     const BASE = 'https://api.pokemontcg.io/v2'
     const setIdCache = new Map<string, string>()
-
-    const toProxyUrl = (url: string) => `/api/proxy?url=${encodeURIComponent(url)}`
 
     const getSetIdByPtcgoCode = async (ptcgoCode: string): Promise<string | null> => {
         if (setIdCache.has(ptcgoCode)) {
@@ -10,7 +25,7 @@ export const usePokemonTcgApi = () => {
         }
 
         try {
-            const data: any = await $fetch(`${BASE}/sets`, {
+            const data = await $fetch<PokemonTcgResponse<PokemonTcgSet>>(`${BASE}/sets`, {
                 params: {
                     q: `ptcgoCode:${ptcgoCode}`,
                     pageSize: 1
@@ -29,7 +44,7 @@ export const usePokemonTcgApi = () => {
         return null
     }
 
-    const searchCards = async (name: string, ptcgoCode?: string, number?: string) => {
+    const searchCards = async (name: string, ptcgoCode?: string, number?: string): Promise<CardResult[]> => {
         const quotedName = name.includes(' ') ? `"${name}"` : name
         let query = `name:${quotedName}`
 
@@ -42,35 +57,32 @@ export const usePokemonTcgApi = () => {
             }
         }
 
-        const data: any = await $fetch(`${BASE}/cards`, {
+        const data = await $fetch<PokemonTcgResponse<PokemonTcgCard>>(`${BASE}/cards`, {
             params: {
                 q: query,
                 pageSize: 12
             }
         })
 
-        const cards = data.data as any[]
-
-        if (cards.length > 0) {
-            return cards.map(card => ({
+        if (data.data.length > 0) {
+            return data.data.map(card => ({
                 id: card.id,
                 name: card.name,
-                imageUrl: toProxyUrl(card.images.large ?? card.images.small)
+                imageUrl: card.images.large ?? card.images.small
             }))
         }
 
         if (ptcgoCode && number) {
-            const fallbackName = name.includes(' ') ? `"${name}"` : name
-            const fallbackData: any = await $fetch(`${BASE}/cards`, {
+            const fallbackData = await $fetch<PokemonTcgResponse<PokemonTcgCard>>(`${BASE}/cards`, {
                 params: {
-                    q: `name:${fallbackName} number:${number}`,
+                    q: `name:${quotedName} number:${number}`,
                     pageSize: 12
                 }
             })
-            return (fallbackData.data as any[]).map(card => ({
+            return fallbackData.data.map(card => ({
                 id: card.id,
                 name: card.name,
-                imageUrl: toProxyUrl(card.images.large ?? card.images.small)
+                imageUrl: card.images.large ?? card.images.small
             }))
         }
 

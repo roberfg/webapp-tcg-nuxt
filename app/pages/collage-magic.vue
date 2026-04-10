@@ -7,7 +7,6 @@ const { searchCards } = useScryfallApi()
 const { generate, download } = useCollageGenerator()
 
 const deckList = ref('')
-const results = ref<any[]>([])
 const deck = ref<{ id: string; name: string; imageUrl: string; quantity: number }[]>([])
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const status = ref('')
@@ -87,20 +86,6 @@ const processDeckList = async () => {
     status.value = 'Error al procesar'
   } finally {
     loading.value = false
-  }
-}
-
-const addCard = (card: any) => {
-  const existing = deck.value.find(c => c.id === card.id)
-  if (existing) {
-    existing.quantity = Math.min(4, existing.quantity + 1)
-  } else {
-    deck.value.push({
-      id: card.id,
-      name: card.name,
-      imageUrl: card.imageUrl,
-      quantity: 1
-    })
   }
 }
 

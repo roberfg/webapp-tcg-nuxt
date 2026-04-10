@@ -1,6 +1,5 @@
 {
   "name": "webapp-tcg-nuxt",
-  "version": "0.0.7",
   "type": "module",
   "private": true,
   "scripts": {
