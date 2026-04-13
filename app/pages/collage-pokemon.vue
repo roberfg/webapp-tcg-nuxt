@@ -11,7 +11,7 @@ useSeoMeta({
 })
 
 const { t } = useLocale()
-const { searchCards } = usePokemonTcgApi()
+const { searchCards, warmSetCache } = usePokemonTcgApi()
 const { generate, download, downloadAll } = useCollageGenerator()
 
 const deckList = ref('')
@@ -47,15 +47,42 @@ interface ParsedCard {
 const parseDeckList = (text: string): ParsedCard[] => {
   const lines = text.trim().split('\n').filter(l => l.trim())
   return lines.map(line => {
-    const parts = line.trim().split(/\s+/)
-    if (parts.length < 3) return null
+    const trimmed = line.trim()
+
+    // Format: "4 Card Name (SET-123)" — e.g. "4 Applin (SCR-12)"
+    const parenMatch = trimmed.match(/^(\d+)\s+(.+?)\s+\(([A-Z0-9]+)-(\d+)\)\s*$/)
+    if (parenMatch) {
+      const quantity = parseInt(parenMatch[1])
+      if (!isNaN(quantity)) {
+        return {
+          quantity,
+          name: parenMatch[2].trim(),
+          setId: parenMatch[3],
+          number: String(parseInt(parenMatch[4]))
+        }
+      }
+    }
+
+    const parts = trimmed.split(/\s+/)
     const quantity = parseInt(parts[0])
-    if (isNaN(quantity)) return null
-    const setCode = parts[parts.length - 2]
-    const numberWithZeros = parts[parts.length - 1]
-    const number = String(parseInt(numberWithZeros))
-    const name = parts.slice(1, parts.length - 2).join(' ')
-    return { quantity, name, setId: setCode, number }
+    if (isNaN(quantity) || parts.length < 2) return null
+
+    // Format: "4 Card Name SET 123" — e.g. "4 Teal Mask Ogerpon ex TWM 25"
+    if (parts.length >= 4) {
+      const possibleSet = parts[parts.length - 2]
+      const possibleNum = parts[parts.length - 1]
+      if (/^[A-Z0-9]+$/.test(possibleSet) && /^\d+$/.test(possibleNum)) {
+        return {
+          quantity,
+          name: parts.slice(1, parts.length - 2).join(' '),
+          setId: possibleSet,
+          number: String(parseInt(possibleNum))
+        }
+      }
+    }
+
+    // Format: "2 Air Balloon" — just quantity + name, no set info
+    return { quantity, name: parts.slice(1).join(' '), setId: null, number: null }
   }).filter(Boolean) as ParsedCard[]
 }
 
@@ -73,6 +100,10 @@ const processDeckList = async () => {
     const parsed = parseDeckList(deckList.value)
     const total = parsed.length
     let processed = 0
+
+    // Pre-load all unique set IDs in parallel so each card search only needs 1 API call
+    const setCodes = parsed.map(c => c.setId).filter(Boolean) as string[]
+    if (setCodes.length > 0) await warmSetCache(setCodes)
 
     for (let i = 0; i < parsed.length; i += 4) {
       const batch = parsed.slice(i, i + 4)
@@ -156,8 +187,8 @@ const onDownload = async () => {
             <textarea
               v-model="deckList"
               placeholder='4 Teal Mask Ogerpon ex TWM 25
-1 Meowth ex POR 62
-1 Fezandipiti ex ASC 142'
+4 Applin (SCR-12)
+2 Air Balloon'
               class="w-full h-48 bg-gray-700 rounded-lg px-3 py-2 text-sm outline-none font-mono"
             />
             <button

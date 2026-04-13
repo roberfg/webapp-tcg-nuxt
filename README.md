@@ -37,12 +37,13 @@ Creada por un grupo de amigos aficionados a Magic: The Gathering y los juegos de
 1,"Black Lotus"
 ```
 
-**Pokémon TCG**
+**Pokémon TCG** — soporta tres formatos:
 ```
-4 Teal Mask Ogerpon ex TWM 25
-2 Mew Ex MEW 151
-1 Switch MEW 206
+4 Teal Mask Ogerpon ex TWM 25   ← cantidad nombre SET número
+4 Applin (SCR-12)                ← cantidad nombre (SET-número)
+2 Air Balloon                    ← cantidad nombre (trainers/energías sin set)
 ```
+Los tres formatos se pueden mezclar en la misma lista. El buscador prioriza coincidencia exacta de nombre para evitar falsos positivos (ej. buscar "Dawn" no retorna "Dawn Wings Necrozma-GX"). Los IDs de set se cachean en localStorage para acelerar búsquedas futuras.
 
 ## APIs e imágenes
 
