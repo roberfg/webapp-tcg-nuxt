@@ -223,7 +223,7 @@ const onDownload = async () => {
           <div class="flex gap-3">
             <button
               class="flex-1 py-3 bg-green-600 rounded-xl font-medium hover:bg-green-700 disabled:opacity-40"
-              :disabled="deck.length === 0"
+              :disabled="deck.length === 0 || loading"
               @click="onGenerate"
             >
               {{ t('generate_collage') }}
