@@ -2,7 +2,7 @@ type Locale = 'es' | 'en'
 
 const translations = {
   es: {
-    home: '← Inicio',
+    home: 'Inicio',
     help: 'Ayuda',
     coming_soon: 'Próximamente...',
     footer_report: 'Si ves algún problema con la web, por favor infórmalo en',
@@ -87,7 +87,7 @@ const translations = {
     terms_s5: 'Para dudas o consultas, únete a nuestro servidor de Discord.',
   },
   en: {
-    home: '← Home',
+    home: 'Home',
     help: 'Help',
     coming_soon: 'Coming soon...',
     footer_report: 'If you see any issue with the website, please report it at',

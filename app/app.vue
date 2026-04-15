@@ -47,6 +47,8 @@ useHead({
     <footer class="text-center text-xs text-gray-600 py-3 border-t border-gray-800 space-y-1">
       <p>tcgcollage.com v{{ version }}</p>
       <p class="flex items-center justify-center gap-3">
+        <NuxtLink to="/" class="text-gray-400 hover:text-white underline">{{ t('home') }}</NuxtLink>
+        <span class="text-gray-700">·</span>
         <NuxtLink to="/help" class="text-gray-400 hover:text-white underline">{{ t('help') }}</NuxtLink>
         <span class="text-gray-700">·</span>
         <NuxtLink to="/about" class="text-gray-400 hover:text-white underline">{{ t('about') }}</NuxtLink>
@@ -57,15 +59,15 @@ useHead({
           href="https://discord.gg/tfZFbett"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-gray-400 hover:text-white underline"
-        >{{ t('footer_discord') }}</a>
+          class="text-gray-400 hover:text-white underline flex items-center justify-center gap-1"
+        >{{ t('footer_discord') }}<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></a>
         <span class="text-gray-700">·</span>
         <a
           href="https://ko-fi.com/E1E31XUPEC"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-gray-400 hover:text-yellow-400 underline"
-        >{{ t('footer_donate') }}</a>
+          class="text-gray-400 hover:text-yellow-400 underline flex items-center justify-center gap-1"
+        >{{ t('footer_donate') }}<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></a>
       </p>
     </footer>
   </div>
