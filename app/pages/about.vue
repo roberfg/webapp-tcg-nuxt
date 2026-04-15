@@ -6,8 +6,8 @@ useSeoMeta({
   description: 'Conoce al equipo detrás de TCG Collage, una herramienta gratuita para jugadores de Magic: The Gathering y Pokémon TCG.',
   ogTitle: 'Sobre nosotros — TCG Collage',
   ogDescription: 'Herramienta gratuita creada por aficionados a los juegos de cartas coleccionables.',
-  ogImage: 'https://tcgcollage.vercel.app/og-image.png',
-  ogUrl: 'https://tcgcollage.vercel.app/about',
+  ogImage: 'https://tcgcollage.com/og-image.png',
+  ogUrl: 'https://tcgcollage.com/about',
   ogType: 'website',
   twitterCard: 'summary_large_image',
 })

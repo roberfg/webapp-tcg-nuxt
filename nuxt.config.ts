@@ -12,13 +12,13 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'es' },
-      title: 'TCG collage',
+      title: 'TCG Collage',
       meta: [
         { name: 'google-site-verification', content: 'HdCC-HGwAEDaI74VM-JONTYkgNp2AFxsIdELAAeuijo' }
       ],
       link: [
         { rel: 'icon', type: 'image/png', href: '/icon.png' },
-        { rel: 'canonical', href: 'https://tcgcollage.vercel.app' }
+        { rel: 'canonical', href: 'https://tcgcollage.com' }
       ]
     }
   }

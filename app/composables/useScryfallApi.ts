@@ -21,11 +21,11 @@ export interface CardResult {
 export const useScryfallApi = () => {
     const BASE = 'https://api.scryfall.com/cards'
 
-    const searchCards = async (name: string): Promise<CardResult[]> => {
+    const searchCards = async (name: string, set?: string): Promise<CardResult[]> => {
         try {
-            const card = await $fetch<ScryfallCard>(`${BASE}/named`, {
-                params: { exact: name }
-            })
+            const params: Record<string, string> = { exact: name }
+            if (set) params.set = set.toLowerCase()
+            const card = await $fetch<ScryfallCard>(`${BASE}/named`, { params })
 
             const imageUris = card.image_uris || card.card_faces?.[0]?.image_uris
             if (!imageUris?.large && !imageUris?.normal) return []

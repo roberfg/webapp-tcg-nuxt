@@ -1,5 +1,15 @@
 export type BadgeShape = 'circle' | 'diamond' | 'hexagon'
 
+const HEADER_HEIGHT = 32
+const CORNER_RADIUS = 16
+const SITE_URL = 'tcgcollage.com'
+
+const hexToRgb = (hex: string) => ({
+    r: parseInt(hex.slice(1, 3), 16),
+    g: parseInt(hex.slice(3, 5), 16),
+    b: parseInt(hex.slice(5, 7), 16),
+})
+
 export const useCollageGenerator = () => {
 
     const loadImg = (url: string, retries = 2): Promise<HTMLImageElement | null> =>
@@ -74,18 +84,43 @@ export const useCollageGenerator = () => {
 
         const getCardY = (row: number) => {
             const sepsAbove = separatorRows ? Math.floor(row / separatorRows) : 0
-            return gap + row * (cardH + gap) + sepsAbove * sepH
+            return HEADER_HEIGHT + gap + row * (cardH + gap) + sepsAbove * sepH
         }
 
         const W = actualCols * cardW + (actualCols - 1) * gap + gap * 2
-        const H = rows * cardH + (rows - 1) * gap + gap * 2 + numSeps * sepH
+        const H = rows * cardH + (rows - 1) * gap + gap * 2 + numSeps * sepH + HEADER_HEIGHT * 2
 
         canvas.width = W
         canvas.height = H
         const ctx = canvas.getContext('2d')!
 
+        // Calcular color de texto adaptativo según luminancia del fondo
+        const { r, g, b } = hexToRgb(bg)
+        const luminance = 0.299 * r + 0.587 * g + 0.114 * b
+        const urlTextColor = luminance > 128 ? '#111827' : '#f9fafb'
+
+        // Rellenar esquinas con bg antes del clip (JPG no soporta transparencia)
         ctx.fillStyle = bg
         ctx.fillRect(0, 0, W, H)
+
+        // Clip redondeado para todo el contenido
+        ctx.save()
+        ctx.beginPath()
+        ctx.roundRect(0, 0, W, H, CORNER_RADIUS)
+        ctx.clip()
+
+        // Fondo interior
+        ctx.fillStyle = bg
+        ctx.fillRect(0, 0, W, H)
+
+        // Header con URL del sitio
+        ctx.fillStyle = bg
+        ctx.fillRect(0, 0, W, HEADER_HEIGHT)
+        ctx.fillStyle = urlTextColor
+        ctx.font = `bold ${Math.round(HEADER_HEIGHT * 0.45)}px sans-serif`
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'middle'
+        ctx.fillText(SITE_URL, W / 2, HEADER_HEIGHT / 2)
 
         // Dibujar bandas de separación con color de fondo de la página
         if (separatorRows && numSeps > 0) {
@@ -132,6 +167,17 @@ export const useCollageGenerator = () => {
             ctx.textBaseline = 'middle'
             ctx.fillText(String(card.quantity), bx, by)
         })
+
+        // Footer con URL del sitio
+        ctx.fillStyle = bg
+        ctx.fillRect(0, H - HEADER_HEIGHT, W, HEADER_HEIGHT)
+        ctx.fillStyle = urlTextColor
+        ctx.font = `bold ${Math.round(HEADER_HEIGHT * 0.45)}px sans-serif`
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'middle'
+        ctx.fillText(SITE_URL, W / 2, H - HEADER_HEIGHT / 2)
+
+        ctx.restore()
     }
 
     const getTimestamp = () => {

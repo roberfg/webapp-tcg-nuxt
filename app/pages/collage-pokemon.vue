@@ -1,11 +1,11 @@
 <script setup lang="ts">
 useSeoMeta({
   title: 'Collage Pokémon TCG — TCG Collage',
-  description: 'Genera collages visuales de tus cartas de Pokémon TCG. Compatible con listas de PTCGO y PTCGL.',
+  description: 'Genera collages visuales de tus cartas y mazos de Pokémon TCG de forma rápida y bonita, para compartir con la comunidad.',
   ogTitle: 'Collage Pokémon TCG — TCG Collage',
-  ogDescription: 'Genera collages de tus cartas de Pokémon en segundos.',
-  ogImage: 'https://tcgcollage.vercel.app/og-image.png',
-  ogUrl: 'https://tcgcollage.vercel.app/collage-pokemon',
+  ogDescription: 'Genera collages visuales de tus cartas y mazos de Pokémon TCG de forma rápida y bonita, para compartir con la comunidad.',
+  ogImage: 'https://tcgcollage.com/og-image.png',
+  ogUrl: 'https://tcgcollage.com/collage-pokemon',
   ogType: 'website',
   twitterCard: 'summary_large_image',
 })

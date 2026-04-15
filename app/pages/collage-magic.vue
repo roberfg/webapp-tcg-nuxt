@@ -1,11 +1,11 @@
 <script setup lang="ts">
 useSeoMeta({
   title: 'Collage Magic: The Gathering — TCG Collage',
-  description: 'Genera collages visuales de tus cartas de Magic: The Gathering. Pega tu lista de mazo y descarga la imagen en PNG.',
+  description: 'Genera collages visuales de tus cartas y mazos de Magic: The Gathering de forma rápida y bonita, para compartir con la comunidad.',
   ogTitle: 'Collage Magic: The Gathering — TCG Collage',
-  ogDescription: 'Genera collages de tus cartas de Magic en segundos.',
-  ogImage: 'https://tcgcollage.vercel.app/og-image.png',
-  ogUrl: 'https://tcgcollage.vercel.app/collage-magic',
+  ogDescription: 'Genera collages visuales de tus cartas y mazos de Magic: The Gathering de forma rápida y bonita, para compartir con la comunidad.',
+  ogImage: 'https://tcgcollage.com/og-image.png',
+  ogUrl: 'https://tcgcollage.com/collage-magic',
   ogType: 'website',
   twitterCard: 'summary_large_image',
 })
@@ -39,16 +39,18 @@ watch(() => deck.value.length, (len) => {
 const parseDeckList = (text: string) => {
   const lines = text.trim().split('\n').filter(l => l.trim())
   return lines.map(line => {
-    let match: RegExpMatchArray | null
     const withQuotes = line.match(/(\d+),\s*"([^"]+)"(?:\s*,\s*(\S+))?/)
     if (withQuotes) {
-      match = withQuotes
-    } else {
-      match = line.match(/^(\d+)\s+(.+)$/)
+      return { quantity: parseInt(withQuotes[1]), name: withQuotes[2], set: withQuotes[3] || undefined }
     }
-    if (!match) return null
-    return { quantity: parseInt(match[1]), name: match[2] }
-  }).filter(Boolean) as { quantity: number; name: string }[]
+    const withSet = line.match(/^(\d+)\s+(.+?)\s+\((\w+)\)\s*$/)
+    if (withSet) {
+      return { quantity: parseInt(withSet[1]), name: withSet[2], set: withSet[3] }
+    }
+    const simple = line.match(/^(\d+)\s+(.+)$/)
+    if (!simple) return null
+    return { quantity: parseInt(simple[1]), name: simple[2], set: undefined }
+  }).filter(Boolean) as { quantity: number; name: string; set?: string }[]
 }
 
 const processDeckList = async () => {
@@ -69,7 +71,7 @@ const processDeckList = async () => {
       const batch = parsed.slice(i, i + 4)
       await Promise.all(batch.map(async (item) => {
         try {
-          const cards = await searchCards(item.name)
+          const cards = await searchCards(item.name, item.set)
           if (cards && cards.length > 0) {
             const card = cards[0]
             const existing = deck.value.find(c => c.id === card.id)
@@ -147,8 +149,8 @@ const onDownload = async () => {
             <textarea
               v-model="deckList"
               placeholder='1 Get Out
-2 Lightning Bolt
-1,"Counterspell"'
+2 Lightning Bolt (M21)
+1,"Counterspell",EMA'
               class="w-full h-48 bg-gray-700 rounded-lg px-3 py-2 text-sm outline-none font-mono"
             />
             <button

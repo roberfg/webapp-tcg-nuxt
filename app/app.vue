@@ -10,8 +10,8 @@ useHead({
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
         name: 'TCG Collage',
-        url: 'https://tcgcollage.vercel.app',
-        description: 'Genera collages visuales de mazos de Magic: The Gathering y Pokémon TCG.',
+        url: 'https://tcgcollage.com',
+        description: 'Genera collages visuales de tus cartas y mazos de forma rápida y bonita, para compartir con la comunidad.',
         applicationCategory: 'UtilitiesApplication',
         operatingSystem: 'Web',
         inLanguage: ['es', 'en'],
@@ -45,21 +45,20 @@ useHead({
     </main>
 
     <footer class="text-center text-xs text-gray-600 py-3 border-t border-gray-800 space-y-1">
-      <p>tcg-collage v{{ version }}</p>
+      <p>tcgcollage.com v{{ version }}</p>
       <p class="flex items-center justify-center gap-3">
         <NuxtLink to="/help" class="text-gray-400 hover:text-white underline">{{ t('help') }}</NuxtLink>
         <span class="text-gray-700">·</span>
         <NuxtLink to="/about" class="text-gray-400 hover:text-white underline">{{ t('about') }}</NuxtLink>
-      </p>
-      <p>
-        {{ t('footer_report') }}
+        <span class="text-gray-700">·</span>
+        <NuxtLink to="/terms" class="text-gray-400 hover:text-white underline">{{ t('terms') }}</NuxtLink>
+        <span class="text-gray-700">·</span>
         <a
-          href="https://github.com/roberfg/webapp-tcg-nuxt/issues"
+          href="https://discord.gg/tfZFbett"
           target="_blank"
           rel="noopener noreferrer"
           class="text-gray-400 hover:text-white underline"
-        >GitHub</a>.
-        {{ t('footer_thanks') }}
+        >{{ t('footer_discord') }}</a>
       </p>
     </footer>
   </div>

@@ -6,8 +6,8 @@ useSeoMeta({
   description: 'Aprende a usar TCG Collage paso a paso. Guía para generar collages de Magic: The Gathering y Pokémon TCG.',
   ogTitle: 'Ayuda — TCG Collage',
   ogDescription: 'Guía paso a paso para generar collages de cartas TCG.',
-  ogImage: 'https://tcgcollage.vercel.app/og-image.png',
-  ogUrl: 'https://tcgcollage.vercel.app/help',
+  ogImage: 'https://tcgcollage.com/og-image.png',
+  ogUrl: 'https://tcgcollage.com/help',
   ogType: 'website',
   twitterCard: 'summary_large_image',
 })
