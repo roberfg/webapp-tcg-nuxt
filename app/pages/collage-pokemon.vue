@@ -100,29 +100,43 @@ const processDeckList = async () => {
     const setCodes = parsed.map(c => c.setId).filter(Boolean) as string[]
     if (setCodes.length > 0) await warmSetCache(setCodes)
 
+    const results: ({ id: string; name: string; imageUrl: string; quantity: number } | null)[] = new Array(total).fill(null)
+    const errorIndices = new Set<number>()
+
     for (let i = 0; i < parsed.length; i += 4) {
       const batch = parsed.slice(i, i + 4)
-      await Promise.all(batch.map(async (item) => {
+      await Promise.all(batch.map(async (item, batchIdx) => {
+        const origIdx = i + batchIdx
         try {
           const cards = await searchCards(item.name, item.setId || undefined, item.number || undefined)
           if (cards && cards.length > 0) {
             const card = cards[0]
-            const existing = deck.value.find(c => c.id === card.id)
-            if (existing) {
-              existing.quantity = Math.min(60,existing.quantity + item.quantity)
-            } else {
-              deck.value.push({ id: card.id, name: card.name, imageUrl: card.imageUrl, quantity: Math.min(60,item.quantity) })
-            }
+            results[origIdx] = { id: card.id, name: card.name, imageUrl: card.imageUrl, quantity: Math.min(60, item.quantity) }
           } else {
             notFound.value.push(item.name)
           }
         } catch (e) {
-          apiErrors.value.push(item.name)
+          errorIndices.add(origIdx)
         } finally {
           processed++
           status.value = t('processing_progress', { processed, total })
         }
       }))
+    }
+
+    const seen = new Map<string, number>()
+    for (const result of results) {
+      if (!result) continue
+      if (seen.has(result.id)) {
+        deck.value[seen.get(result.id)!].quantity = Math.min(60, deck.value[seen.get(result.id)!.quantity + result.quantity])
+      } else {
+        seen.set(result.id, deck.value.length)
+        deck.value.push(result)
+      }
+    }
+
+    for (const idx of errorIndices) {
+      apiErrors.value.push(parsed[idx].name)
     }
 
     status.value = t('cards_loaded', { count: deck.value.length })
