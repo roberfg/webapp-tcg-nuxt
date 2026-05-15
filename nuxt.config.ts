@@ -12,7 +12,7 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   app: {
     head: {
-      htmlAttrs: { lang: 'es' },
+      htmlAttrs: { lang: 'es', class: 'dark' },
       title: 'TCG Collage',
       meta: [
         { name: 'google-site-verification', content: 'HdCC-HGwAEDaI74VM-JONTYkgNp2AFxsIdELAAeuijo' }

@@ -207,37 +207,37 @@ const onGenerate = async () => {
 
           <div class="    bg-brand-200 dark:bg-brand-900 rounded-xl p-4">
             <p class="text-sm text-brand-500 dark:text-brand-400 mb-3">{{ t('settings') }}</p>
-            <div class="grid grid-cols-2 gap-3 text-sm">
-              <label class="flex flex-col gap-1">
+            <div class="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+              <label class="flex items-center justify-between">
                 <span class="text-brand-500 dark:text-brand-400">{{ t('columns') }}</span>
-                <input v-model.number="cols" type="number" min="1" max="10" class="w-16 bg-brand-100 dark:bg-brand-800 rounded px-2 py-1" />
-                <span class="text-xs text-brand-400 dark:text-brand-600">{{ t('columns_hint') }}</span>
+                <input v-model.number="cols" type="number" min="1" max="10" class="w-16 bg-brand-100 dark:bg-brand-800 rounded px-2 py-1 text-center" />
               </label>
-              <label class="flex items-center gap-2">
+              <label class="flex items-center justify-between">
                 <span class="text-brand-500 dark:text-brand-400">{{ t('gap') }} (px)</span>
-                <input v-model.number="gap" type="number" min="0" max="40" class="w-16 bg-brand-100 dark:bg-brand-800 rounded px-2 py-1" />
+                <input v-model.number="gap" type="number" min="0" max="40" class="w-16 bg-brand-100 dark:bg-brand-800 rounded px-2 py-1 text-center" />
               </label>
-              <label class="flex items-center gap-2">
+              <label class="flex items-center justify-between">
                 <span class="text-brand-500 dark:text-brand-400">{{ t('background') }}</span>
                 <input v-model="bg" type="color" class="w-10 h-8 rounded cursor-pointer" />
               </label>
-              <label class="flex items-center gap-2">
+              <label class="flex items-center justify-between">
                 <span class="text-brand-500 dark:text-brand-400">{{ t('circle') }}</span>
                 <input v-model="badgeColor" type="color" class="w-10 h-8 rounded cursor-pointer" />
               </label>
-              <label class="flex items-center gap-2">
+              <label class="flex items-center justify-between">
                 <span class="text-brand-500 dark:text-brand-400">{{ t('border') }}</span>
                 <input v-model="borderColor" type="color" class="w-10 h-8 rounded cursor-pointer" />
               </label>
-              <label class="flex items-center gap-2">
+              <label class="flex items-center justify-between">
                 <span class="text-brand-500 dark:text-brand-400">{{ t('badge') }}</span>
-                <select v-model="badgeShape" class="bg-brand-100 dark:bg-brand-800 rounded px-2 py-1">
+                <select v-model="badgeShape" class="w-20 bg-brand-100 dark:bg-brand-800 rounded px-2 py-1">
                   <option value="circle">{{ t('circle') }}</option>
                   <option value="diamond">{{ t('diamond') }}</option>
                   <option value="hexagon">{{ t('hexagon') }}</option>
                 </select>
               </label>
             </div>
+            <span class="text-xs text-brand-400 dark:text-brand-600 mt-2 block">{{ t('columns_hint') }}</span>
             <div class="mt-3">
               <span class="text-brand-500 dark:text-brand-400 text-sm block mb-1">{{ t('download_mode') }}</span>
               <div class="flex gap-2">
