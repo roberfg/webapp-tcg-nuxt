@@ -1,4 +1,4 @@
-# webapp-tcg-nuxt
+# tcgcollage.com
 
 Aplicación web para generar collages de cartas TCG (Pokémon y Magic: The Gathering) a partir de listas de deck. Permite descargar el resultado como imagen JPG.
 
@@ -84,6 +84,50 @@ yarn preview
 ## Deploy
 
 El proyecto está configurado para desplegarse en **Vercel** en modo SSR. Los server routes (`/api/image-proxy`) se despliegan automáticamente como Vercel Functions.
+
+## Roadmap
+
+### Collage
+- [ ] **Tooltip con preview de carta** — Al hacer hover sobre una carta en la lista del deck, mostrar la imagen flotante.
+- [ ] **Ordenar cartas en el collage** — Dropdown para ordenar por orden de entrada, nombre A-Z, cantidad descendente, tipo (Magic).
+- [ ] **Importar deck desde archivo `.txt`** — Botón para subir un archivo de texto con la lista de cartas.
+- [ ] **Exportar deck como `.txt`** — Botón para descargar la lista procesada como archivo de texto.
+- [ ] **Soporte >4 copias en Magic** — Lands y básicas pueden ir a 60+ copias.
+- [ ] **Exportar collage como PDF** — Grid 3x3 fijo, una página por cada 9 cartas, JPEG 0.80.
+
+### Búsqueda
+- [ ] **Buscador de cartas con autocomplete** — Input que busque en Scryfall/Pokémon TCG API mientras escribes.
+- [ ] **Filtros: por set, por rareza, por tipo** — Complemento del buscador para refinar resultados.
+
+### Páginas pendientes
+- [ ] `/database` — Explorador de cartas con búsqueda, filtros y autocomplete.
+- [ ] `/collection` — Colección personal persistida en localStorage o base de datos.
+- [ ] **One Piece TCG** — Desbloquear la tarjeta de One Piece cuando haya API disponible.
+
+### UX / Visual
+- [ ] **Botón "Limpiar todo"** — Resetear textarea, deck, canvas y status de una vez.
+- [ ] **Toast de confirmación al descargar** — Notificación visual al descargar JPG/PDF.
+- [ ] **Guardar configuración en localStorage** — Que cols, gap, bg, badgeColor, borderColor, badgeShape persistan entre sesiones.
+- [ ] **Skeleton loading en deck list** — Placeholders grises mientras se procesan las cartas.
+- [ ] **Mensaje cuando el collage está vacío** — Invitar a pegar una lista cuando no hay cartas cargadas.
+- [ ] **Modo claro / oscuro** — Toggle light/dark.
+
+### Mobile
+- [ ] **Tabs (Controles / Preview)** — En pantallas <640px, alternar entre controles y preview.
+- [ ] **Botones +/- más grandes** — Inputs de columnas y filas más táctiles en móvil.
+- [ ] **Web Share API** — Botón "Compartir" que use el share nativo del móvil.
+
+### Técnico / Calidad
+- [ ] **Componente `DeckInput`** — Extraer textarea + botón procesar + lista de cartas en componente reutilizable.
+- [ ] **Componente `CollageSettings`** — Extraer panel de configuración en componente propio.
+- [ ] **Límite de cartas con aviso** — Si el usuario pega 200+ cartas, mostrar un warning antes de procesar.
+
+### Orden recomendado de implementación
+1. Guardar configuración en localStorage
+2. Botón "Limpiar todo"
+3. Tooltip preview de carta
+4. Toast de confirmación
+5. Importar deck desde `.txt`
 
 ## Reportar problemas
 
