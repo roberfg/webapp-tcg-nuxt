@@ -18,9 +18,9 @@ useSeoMeta({
     <div class="text-center">
       <img src="/logo.png" alt="TCG Collage" class="w-64 sm:w-80 mx-auto mb-4" />
 
-      <p class="text-brand-300 text-base sm:text-lg mb-4 max-w-md mx-auto">{{ t('home_description') }}</p>
+      <p class="text-brand-600 dark:text-brand-300 text-base sm:text-lg mb-4 max-w-md mx-auto">{{ t('home_description') }}</p>
 
-      <p class="text-brand-400 text-sm mb-10">
+      <p class="text-brand-500 dark:text-brand-400 text-sm mb-10">
         {{ t('home_help_hint') }}
         <NuxtLink to="/help" class="text-emerald-400 hover:text-emerald-300 underline">{{ t('help') }}</NuxtLink>.
       </p>
@@ -38,11 +38,11 @@ useSeoMeta({
           </NuxtLink>
         </div>
 
-        <div class="relative flex flex-col items-center border-2 border-brand-700 rounded-xl p-6 opacity-60 cursor-not-allowed">
+        <div class="relative flex flex-col items-center border-2 border-brand-300 dark:border-brand-700 rounded-xl p-6 opacity-60 cursor-not-allowed">
           <div class="w-32 h-32 sm:w-48 sm:h-48 relative">
             <img src="/one-piece-logo.png" alt="One Piece" class="w-full h-full object-contain" />
             <div class="absolute bottom-1 inset-x-0 flex items-end justify-center">
-              <span class="text-white font-bold text-sm sm:text-base tracking-widest drop-shadow">{{ t('coming_soon') }}</span>
+              <span class="text-brand-950 dark:text-white font-bold text-sm sm:text-base tracking-widest drop-shadow">{{ t('coming_soon') }}</span>
             </div>
           </div>
         </div>

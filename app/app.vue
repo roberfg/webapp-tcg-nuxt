@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { public: { version } } = useRuntimeConfig()
 const { locale, setLocale, t } = useLocale()
+useTheme()
 
 useHead({
   script: [
@@ -23,7 +24,9 @@ useHead({
 </script>
 
 <template>
-  <div class="flex flex-col min-h-screen bg-brand-950 text-white">
+  <div class="flex flex-col min-h-screen bg-brand-100 dark:bg-brand-950 text-brand-950 dark:text-white">
+
+    <ThemeToggle />
 
     <div class="fixed top-3 right-3 z-50 flex gap-2">
       <button
@@ -44,29 +47,29 @@ useHead({
       <NuxtPage />
     </main>
 
-    <footer class="text-center text-xs text-brand-600 py-3 border-t border-brand-800 space-y-1">
+    <footer class="text-center text-xs text-brand-500 dark:text-brand-600 py-3 border-t border-brand-300 dark:border-brand-800 space-y-1">
       <p>tcgcollage.com v{{ version }}</p>
       <p class="flex items-center justify-center gap-3">
-        <NuxtLink to="/" class="text-brand-300 hover:text-white underline">{{ t('home') }}</NuxtLink>
-        <span class="text-brand-700">·</span>
-        <NuxtLink to="/help" class="text-brand-300 hover:text-white underline">{{ t('help') }}</NuxtLink>
-        <span class="text-brand-700">·</span>
-        <NuxtLink to="/about" class="text-brand-300 hover:text-white underline">{{ t('about') }}</NuxtLink>
-        <span class="text-brand-700">·</span>
-        <NuxtLink to="/terms" class="text-brand-300 hover:text-white underline">{{ t('terms') }}</NuxtLink>
-        <span class="text-brand-700">·</span>
+        <NuxtLink to="/" class="text-brand-600 dark:text-brand-300 hover:text-brand-900 dark:hover:text-white underline">{{ t('home') }}</NuxtLink>
+        <span class="text-brand-400 dark:text-brand-700">·</span>
+        <NuxtLink to="/help" class="text-brand-600 dark:text-brand-300 hover:text-brand-900 dark:hover:text-white underline">{{ t('help') }}</NuxtLink>
+        <span class="text-brand-400 dark:text-brand-700">·</span>
+        <NuxtLink to="/about" class="text-brand-600 dark:text-brand-300 hover:text-brand-900 dark:hover:text-white underline">{{ t('about') }}</NuxtLink>
+        <span class="text-brand-400 dark:text-brand-700">·</span>
+        <NuxtLink to="/terms" class="text-brand-600 dark:text-brand-300 hover:text-brand-900 dark:hover:text-white underline">{{ t('terms') }}</NuxtLink>
+        <span class="text-brand-400 dark:text-brand-700">·</span>
         <a
           href="https://discord.gg/tfZFbett"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-brand-300 hover:text-white underline flex items-center justify-center gap-1"
+          class="text-brand-600 dark:text-brand-300 hover:text-brand-900 dark:hover:text-white underline flex items-center justify-center gap-1"
         >{{ t('footer_discord') }}<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></a>
-        <span class="text-brand-700">·</span>
+        <span class="text-brand-400 dark:text-brand-700">·</span>
         <a
           href="https://ko-fi.com/E1E31XUPEC"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-brand-300 hover:text-amber-400 underline flex items-center justify-center gap-1"
+          class="text-brand-600 dark:text-brand-300 hover:text-amber-500 dark:hover:text-amber-400 underline flex items-center justify-center gap-1"
         >{{ t('footer_donate') }}<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></a>
       </p>
     </footer>
